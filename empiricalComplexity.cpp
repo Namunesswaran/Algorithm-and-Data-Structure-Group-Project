@@ -266,9 +266,9 @@ int main() {
     int sizes[] = {10, 100, 1000, 10000, 100000, 1000000};
 
     for (int s : sizes) {
-        // runLinearSearchTests(s);
-        // runBinarySearchTests(s);
-        // runMergeSortTests(s);
+        runLinearSearchTests(s);
+        runBinarySearchTests(s);
+        runMergeSortTests(s);
         runBinaryInsertionTests(s);
         cout << "\n-------------------------------------\n";
     }
