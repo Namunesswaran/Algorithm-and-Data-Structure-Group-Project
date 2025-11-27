@@ -176,15 +176,30 @@ void runMergeSortTests(int size) {
 
     int* arr = new int[size];
 
-    // fill with random values
-    for (int i = 0; i < size; i++)
-        arr[i] = rand();
-
+    // BEST CASE → already sorted
+    for (int i = 0; i < size; i++) arr[i] = i;
     auto start = high_resolution_clock::now();
     mergeSort(arr, 0, size - 1);
     auto end = high_resolution_clock::now();
+    cout << "Best Case (Sorted Input): "
+         << duration_cast<microseconds>(end - start).count()
+         << " microseconds" << endl;
 
-    cout << "Merge Sort Time: "
+    // AVERAGE CASE → random values
+    for (int i = 0; i < size; i++) arr[i] = rand();
+    start = high_resolution_clock::now();
+    mergeSort(arr, 0, size - 1);
+    end = high_resolution_clock::now();
+    cout << "Average Case (Random Input): "
+         << duration_cast<microseconds>(end - start).count()
+         << " microseconds" << endl;
+
+    // WORST CASE → reverse sorted
+    for (int i = 0; i < size; i++) arr[i] = size - i;
+    start = high_resolution_clock::now();
+    mergeSort(arr, 0, size - 1);
+    end = high_resolution_clock::now();
+    cout << "Worst Case (Reverse Sorted): "
          << duration_cast<microseconds>(end - start).count()
          << " microseconds" << endl;
 
@@ -198,9 +213,9 @@ int main() {
     int sizes[] = {10, 100, 1000, 10000, 100000, 1000000};
 
     for (int s : sizes) {
+        runLinearSearchTests(s);
         runBinarySearchTests(s);
         runMergeSortTests(s);
-        runLinearSearchTests(s);
         cout << "\n-------------------------------------\n";
     }
 
