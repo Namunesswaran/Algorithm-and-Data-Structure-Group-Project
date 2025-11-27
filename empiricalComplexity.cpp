@@ -4,6 +4,15 @@
 using namespace std;
 using namespace std::chrono;
 
+// Linear Search
+int linearSearch(int arr[], int size, int target) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == target)
+            return i;  // found
+    }
+    return -1; // not found
+}
+
 // Binary Search
 int binarySearch(int arr[], int size, int target) {
     int left = 0;
@@ -64,6 +73,53 @@ void mergeSort(int arr[], int l, int r) {
 void generateSortedArray(int arr[], int size) {
     for (int i = 0; i < size; i++)
         arr[i] = i + 1;
+}
+
+void runLinearSearchTests(int size) {
+    cout << "\n===============================";
+    cout << "\nLINEAR SEARCH (Array size = " << size << ")";
+    cout << "\n===============================" << endl;
+
+    int* arr = new int[size];
+    generateSortedArray(arr, size);
+
+    // BEST CASE → first element
+    int bestTarget = arr[0];
+    auto start = high_resolution_clock::now();
+    linearSearch(arr, size, bestTarget);
+    auto end = high_resolution_clock::now();
+    cout << "Best Case Time: "
+         << duration_cast<milliseconds>(end - start).count()
+         << " ms" << endl;
+
+    // AVERAGE CASE → middle element
+    int avgTarget = arr[size / 2];
+    start = high_resolution_clock::now();
+    linearSearch(arr, size, avgTarget);
+    end = high_resolution_clock::now();
+    cout << "Average Case Time: "
+         << duration_cast<milliseconds>(end - start).count()
+         << " ms" << endl;
+
+    // WORST CASE → last element
+    int worstTarget = arr[size - 1];
+    start = high_resolution_clock::now();
+    linearSearch(arr, size, worstTarget);
+    end = high_resolution_clock::now();
+    cout << "Worst Case Time: "
+         << duration_cast<milliseconds>(end - start).count()
+         << " ms" << endl;
+
+    // NOT FOUND CASE
+    int notFound = size + 5000;
+    start = high_resolution_clock::now();
+    linearSearch(arr, size, notFound);
+    end = high_resolution_clock::now();
+    cout << "Not Found Case Time: "
+         << duration_cast<milliseconds>(end - start).count()
+         << " ms" << endl;
+
+    delete[] arr;
 }
 
 void runBinarySearchTests(int size) {
@@ -144,6 +200,7 @@ int main() {
     for (int s : sizes) {
         runBinarySearchTests(s);
         runMergeSortTests(s);
+        runLinearSearchTests(s);
         cout << "\n-------------------------------------\n";
     }
 
