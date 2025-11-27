@@ -69,6 +69,36 @@ void mergeSort(int arr[], int l, int r) {
     }
 }
 
+// Binary Insertion
+int findInsertPosition(int arr[], int size, int target) {
+    int left = 0, right = size - 1;
+    int mid;
+
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+            return mid;
+
+        if (arr[mid] < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return left;
+}
+
+int binaryInsertion(int arr[], int size, int target) {
+    int pos = findInsertPosition(arr, size, target);
+
+    for (int i = size; i > pos; --i) {
+        arr[i] = arr[i - 1];
+    }
+    arr[pos] = target;
+    return size + 1;
+}
+
 // Test Generators
 void generateSortedArray(int arr[], int size) {
     for (int i = 0; i < size; i++)
@@ -109,17 +139,6 @@ void runLinearSearchTests(int size) {
     cout << "Worst Case Time: "
          << duration_cast<milliseconds>(end - start).count()
          << " ms" << endl;
-
-    // NOT FOUND CASE
-    int notFound = size + 5000;
-    start = high_resolution_clock::now();
-    linearSearch(arr, size, notFound);
-    end = high_resolution_clock::now();
-    cout << "Not Found Case Time: "
-         << duration_cast<milliseconds>(end - start).count()
-         << " ms" << endl;
-
-    delete[] arr;
 }
 
 void runBinarySearchTests(int size) {
@@ -154,15 +173,6 @@ void runBinarySearchTests(int size) {
     binarySearch(arr, size, worstTarget);
     end = high_resolution_clock::now();
     cout << "Worst Case Time: "
-         << duration_cast<microseconds>(end - start).count()
-         << " microseconds" << endl;
-
-    // ELEMENT NOT FOUND
-    int notFound = size + 5000;
-    start = high_resolution_clock::now();
-    binarySearch(arr, size, notFound);
-    end = high_resolution_clock::now();
-    cout << "Not Found Case Time: "
          << duration_cast<microseconds>(end - start).count()
          << " microseconds" << endl;
 
@@ -206,6 +216,49 @@ void runMergeSortTests(int size) {
     delete[] arr;
 }
 
+void runBinaryInsertionTests(int size) {
+    cout << "\n===============================";
+    cout << "\nBINARY INSERTION TEST (Array size = " << size << ")";
+    cout << "\n===============================" << endl;
+
+    int* arr = new int[size + 1]; // +1 for insertion
+
+    // BEST CASE
+    for(int i = 0; i < size; i++) arr[i] = i; // fresh sorted array
+    int target = size; // insert at end → minimal shifting
+    auto start = high_resolution_clock::now();
+    binaryInsertion(arr, size, target);
+    auto end = high_resolution_clock::now();
+    cout << "Best Case (Insert at end): "
+         << duration_cast<microseconds>(end - start).count()
+         << " microseconds" << endl;
+
+    // AVERAGE CASE
+    for(int i = 0; i < size; i++) arr[i] = i; // reset array
+    target = size / 2; // insert middle → ~half shifting
+    start = high_resolution_clock::now();
+    binaryInsertion(arr, size, target);
+    end = high_resolution_clock::now();
+    cout << "Average Case (Insert middle): "
+         << duration_cast<microseconds>(end - start).count()
+         << " microseconds" << endl;
+
+    // WORST CASE
+    for(int i = 0; i < size; i++) arr[i] = i; // reset array
+    target = 0; // insert at beginning → max shifting
+    start = high_resolution_clock::now();
+    binaryInsertion(arr, size, target);
+    end = high_resolution_clock::now();
+    cout << "Worst Case (Insert at beginning): "
+         << duration_cast<microseconds>(end - start).count()
+         << " microseconds" << endl;
+
+    delete[] arr;
+}
+
+
+
+
 // ====================== MAIN PROGRAM ==============================
 int main() {
     srand(time(NULL));
@@ -213,9 +266,10 @@ int main() {
     int sizes[] = {10, 100, 1000, 10000, 100000, 1000000};
 
     for (int s : sizes) {
-        runLinearSearchTests(s);
-        runBinarySearchTests(s);
-        runMergeSortTests(s);
+        // runLinearSearchTests(s);
+        // runBinarySearchTests(s);
+        // runMergeSortTests(s);
+        runBinaryInsertionTests(s);
         cout << "\n-------------------------------------\n";
     }
 
