@@ -2,23 +2,9 @@
 #include <string>
 using namespace std;
 
-int main() {
-    // sample sorted books
-    string books[6] = {
-        "Alice in Wonderland",
-        "Harry Potter",
-        "Introduction to Algorithms",
-        "Lord of the Rings",
-        "Programming in C++",
-        "The Great Gatsby"
-    };
-
-    string findBook;
-    cout << "Enter book title to search: ";
-    getline(cin, findBook);
-
+int main(int arr[], int size, int target) {
     int left = 0;
-    int right = 5;
+    int right = size - 1;
     int mid;
     bool found = false;
 
@@ -26,13 +12,13 @@ int main() {
     while (left <= right) {
         mid = (left + right) / 2;
 
-        if (books[mid] == findBook) {
+        if (arr[mid] == target) {
             found = true;
             break;
         }
 
         // if the book title is bigger alphabetically
-        if (books[mid] < findBook) {
+        if (arr[mid] < target) {
             left = mid + 1;
         } 
         else {
