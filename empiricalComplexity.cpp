@@ -218,7 +218,7 @@ void runMergeSortTests(int size) {
 
 void runBinaryInsertionTests(int size) {
     cout << "\n===============================";
-    cout << "\nBINARY INSERTION TEST (Array size = " << size << ")";
+    cout << "\nBINARY INSERTION SORT (Array size = " << size << ")";
     cout << "\n===============================" << endl;
 
     int* arr = new int[size + 1]; // +1 for insertion
